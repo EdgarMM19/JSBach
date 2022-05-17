@@ -15,9 +15,9 @@ codeblock : (line)+;
 
 line : 
            VAR  '<-'  expr                                                 # assign /* TODO: LLISTES */
-        |  '<!>' (printable)+                                                # wrt /* TODO: escriure moltes coses, lletra, llistes */
-        |  '<?>'  VAR                                                      # read
-        |  '<:>'  NOTE                                                     # repr /* TODO: llistes de notes */
+        |  '<!>' (printable)+                                              # wrt /* TODO: escriure moltes coses, lletra, llistes */
+        |  '<?>' VAR                                                       # read
+        |  '<:>' EXPR                                                      # repr /* TODO: llistes de notes */
         |  'if' cond '|:'  codeblock ':|' 'else' '|:' codeblock ':|'       # ifelse 
         |  'if'  cond  '|:'   codeblock  ':|'                              # if
         |  'while'  cond  '|:'   codeblock  ':|'                           # while
@@ -34,6 +34,7 @@ expr :
     | expr  SUBS  expr       # sub
     | NUM                    # num
     | VAR                    # var
+    | NOTE                   # note
     ;
 
 fheader :
@@ -47,12 +48,15 @@ cond :  expr  COMP  expr  ;
 printable : expr
             | STR;
 
-STR : '"' (~[ \n\r])+ '"';
+STR : '"' (~[\n\r"])+ '"';
 
 LN : '\n' | EOF;
 VAR : [a-z][A-Za-z0-9]*;
-FNME : [A-Z][A-Za-z0-9]*; /* TODO: distingir variables i funcions si o no */
-NOTE: [A-C][0-8]; /* TODO: ferho be */
+FNME : [A-Z][A-Za-z0-9]*; 
+NOTE: [A-B]'0' 
+    | [A-G][1-7]
+    | [A-G]
+    | 'C8' ; 
 NUM : [0-9]+ ;
 
 
@@ -65,4 +69,4 @@ COMP : '=' | '<' | '>' | '/=' | '<=' | '>=' ;
 
 WS : [ \n\t\r]+ -> skip ;
 
-/* COMMENT : '~''~''~'~'~''~''~' -> skip; TODO */
+COMMENT : '~''~''~' (~[~])* '~''~''~' -> skip;

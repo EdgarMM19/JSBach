@@ -10,18 +10,18 @@ else:
 
 def serializedATN():
     return [
-        4,1,24,128,2,0,7,0,2,1,7,1,2,2,7,2,2,3,7,3,2,4,7,4,2,5,7,5,2,6,7,
+        4,1,25,129,2,0,7,0,2,1,7,1,2,2,7,2,2,3,7,3,2,4,7,4,2,5,7,5,2,6,7,
         6,2,7,7,7,2,8,7,8,2,9,7,9,1,0,1,0,1,0,1,1,4,1,25,8,1,11,1,12,1,26,
         1,2,1,2,1,2,1,2,1,2,1,2,1,3,4,3,36,8,3,11,3,12,3,37,1,4,1,4,1,4,
         1,4,1,4,4,4,45,8,4,11,4,12,4,46,1,4,1,4,1,4,1,4,1,4,1,4,1,4,1,4,
         1,4,1,4,1,4,1,4,1,4,1,4,1,4,1,4,1,4,1,4,1,4,1,4,1,4,1,4,1,4,1,4,
-        1,4,1,4,1,4,1,4,3,4,77,8,4,1,5,1,5,1,5,1,5,1,5,1,5,1,5,3,5,86,8,
-        5,1,5,1,5,1,5,1,5,1,5,1,5,1,5,1,5,1,5,1,5,1,5,1,5,1,5,1,5,1,5,5,
-        5,103,8,5,10,5,12,5,106,9,5,1,6,5,6,109,8,6,10,6,12,6,112,9,6,1,
-        7,5,7,115,8,7,10,7,12,7,118,9,7,1,8,1,8,1,8,1,8,1,9,1,9,3,9,126,
-        8,9,1,9,0,1,10,10,0,2,4,6,8,10,12,14,16,18,0,0,137,0,20,1,0,0,0,
-        2,24,1,0,0,0,4,28,1,0,0,0,6,35,1,0,0,0,8,76,1,0,0,0,10,85,1,0,0,
-        0,12,110,1,0,0,0,14,116,1,0,0,0,16,119,1,0,0,0,18,125,1,0,0,0,20,
+        1,4,1,4,1,4,1,4,3,4,77,8,4,1,5,1,5,1,5,1,5,1,5,1,5,1,5,1,5,3,5,87,
+        8,5,1,5,1,5,1,5,1,5,1,5,1,5,1,5,1,5,1,5,1,5,1,5,1,5,1,5,1,5,1,5,
+        5,5,104,8,5,10,5,12,5,107,9,5,1,6,5,6,110,8,6,10,6,12,6,113,9,6,
+        1,7,5,7,116,8,7,10,7,12,7,119,9,7,1,8,1,8,1,8,1,8,1,9,1,9,3,9,127,
+        8,9,1,9,0,1,10,10,0,2,4,6,8,10,12,14,16,18,0,0,139,0,20,1,0,0,0,
+        2,24,1,0,0,0,4,28,1,0,0,0,6,35,1,0,0,0,8,76,1,0,0,0,10,86,1,0,0,
+        0,12,111,1,0,0,0,14,117,1,0,0,0,16,120,1,0,0,0,18,126,1,0,0,0,20,
         21,3,2,1,0,21,22,5,0,0,1,22,1,1,0,0,0,23,25,3,4,2,0,24,23,1,0,0,
         0,25,26,1,0,0,0,26,24,1,0,0,0,26,27,1,0,0,0,27,3,1,0,0,0,28,29,5,
         15,0,0,29,30,3,12,6,0,30,31,5,1,0,0,31,32,3,6,3,0,32,33,5,2,0,0,
@@ -37,21 +37,21 @@ def serializedATN():
         73,5,2,0,0,73,77,1,0,0,0,74,75,5,15,0,0,75,77,3,14,7,0,76,39,1,0,
         0,0,76,42,1,0,0,0,76,48,1,0,0,0,76,50,1,0,0,0,76,52,1,0,0,0,76,62,
         1,0,0,0,76,68,1,0,0,0,76,74,1,0,0,0,77,9,1,0,0,0,78,79,6,5,-1,0,
-        79,80,5,10,0,0,80,81,3,10,5,0,81,82,5,11,0,0,82,86,1,0,0,0,83,86,
-        5,17,0,0,84,86,5,14,0,0,85,78,1,0,0,0,85,83,1,0,0,0,85,84,1,0,0,
-        0,86,104,1,0,0,0,87,88,10,7,0,0,88,89,5,20,0,0,89,103,3,10,5,8,90,
-        91,10,6,0,0,91,92,5,19,0,0,92,103,3,10,5,7,93,94,10,5,0,0,94,95,
-        5,22,0,0,95,103,3,10,5,6,96,97,10,4,0,0,97,98,5,18,0,0,98,103,3,
-        10,5,5,99,100,10,3,0,0,100,101,5,21,0,0,101,103,3,10,5,4,102,87,
-        1,0,0,0,102,90,1,0,0,0,102,93,1,0,0,0,102,96,1,0,0,0,102,99,1,0,
-        0,0,103,106,1,0,0,0,104,102,1,0,0,0,104,105,1,0,0,0,105,11,1,0,0,
-        0,106,104,1,0,0,0,107,109,5,14,0,0,108,107,1,0,0,0,109,112,1,0,0,
-        0,110,108,1,0,0,0,110,111,1,0,0,0,111,13,1,0,0,0,112,110,1,0,0,0,
-        113,115,3,10,5,0,114,113,1,0,0,0,115,118,1,0,0,0,116,114,1,0,0,0,
-        116,117,1,0,0,0,117,15,1,0,0,0,118,116,1,0,0,0,119,120,3,10,5,0,
-        120,121,5,23,0,0,121,122,3,10,5,0,122,17,1,0,0,0,123,126,3,10,5,
-        0,124,126,5,12,0,0,125,123,1,0,0,0,125,124,1,0,0,0,126,19,1,0,0,
-        0,10,26,37,46,76,85,102,104,110,116,125
+        79,80,5,10,0,0,80,81,3,10,5,0,81,82,5,11,0,0,82,87,1,0,0,0,83,87,
+        5,17,0,0,84,87,5,14,0,0,85,87,5,16,0,0,86,78,1,0,0,0,86,83,1,0,0,
+        0,86,84,1,0,0,0,86,85,1,0,0,0,87,105,1,0,0,0,88,89,10,8,0,0,89,90,
+        5,20,0,0,90,104,3,10,5,9,91,92,10,7,0,0,92,93,5,19,0,0,93,104,3,
+        10,5,8,94,95,10,6,0,0,95,96,5,22,0,0,96,104,3,10,5,7,97,98,10,5,
+        0,0,98,99,5,18,0,0,99,104,3,10,5,6,100,101,10,4,0,0,101,102,5,21,
+        0,0,102,104,3,10,5,5,103,88,1,0,0,0,103,91,1,0,0,0,103,94,1,0,0,
+        0,103,97,1,0,0,0,103,100,1,0,0,0,104,107,1,0,0,0,105,103,1,0,0,0,
+        105,106,1,0,0,0,106,11,1,0,0,0,107,105,1,0,0,0,108,110,5,14,0,0,
+        109,108,1,0,0,0,110,113,1,0,0,0,111,109,1,0,0,0,111,112,1,0,0,0,
+        112,13,1,0,0,0,113,111,1,0,0,0,114,116,3,10,5,0,115,114,1,0,0,0,
+        116,119,1,0,0,0,117,115,1,0,0,0,117,118,1,0,0,0,118,15,1,0,0,0,119,
+        117,1,0,0,0,120,121,3,10,5,0,121,122,5,23,0,0,122,123,3,10,5,0,123,
+        17,1,0,0,0,124,127,3,10,5,0,125,127,5,12,0,0,126,124,1,0,0,0,126,
+        125,1,0,0,0,127,19,1,0,0,0,10,26,37,46,76,86,103,105,111,117,126
     ]
 
 class jsbachParser ( Parser ):
@@ -74,7 +74,7 @@ class jsbachParser ( Parser ):
                       "<INVALID>", "<INVALID>", "<INVALID>", "<INVALID>", 
                       "<INVALID>", "<INVALID>", "<INVALID>", "<INVALID>", 
                       "STR", "LN", "VAR", "FNME", "NOTE", "NUM", "ADD", 
-                      "MULT", "DIV", "SUBS", "REM", "COMP", "WS" ]
+                      "MULT", "DIV", "SUBS", "REM", "COMP", "WS", "COMMENT" ]
 
     RULE_root = 0
     RULE_functions = 1
@@ -115,6 +115,7 @@ class jsbachParser ( Parser ):
     REM=22
     COMP=23
     WS=24
+    COMMENT=25
 
     def __init__(self, input:TokenStream, output:TextIO = sys.stdout):
         super().__init__(input, output)
@@ -711,6 +712,22 @@ class jsbachParser ( Parser ):
                 return visitor.visitChildren(self)
 
 
+    class NoteContext(ExprContext):
+
+        def __init__(self, parser, ctx:ParserRuleContext): # actually a jsbachParser.ExprContext
+            super().__init__(parser)
+            self.copyFrom(ctx)
+
+        def NOTE(self):
+            return self.getToken(jsbachParser.NOTE, 0)
+
+        def accept(self, visitor:ParseTreeVisitor):
+            if hasattr( visitor, "visitNote" ):
+                return visitor.visitNote(self)
+            else:
+                return visitor.visitChildren(self)
+
+
     class SubContext(ExprContext):
 
         def __init__(self, parser, ctx:ParserRuleContext): # actually a jsbachParser.ExprContext
@@ -819,7 +836,7 @@ class jsbachParser ( Parser ):
         self.enterRecursionRule(localctx, 10, self.RULE_expr, _p)
         try:
             self.enterOuterAlt(localctx, 1)
-            self.state = 85
+            self.state = 86
             self._errHandler.sync(self)
             token = self._input.LA(1)
             if token in [jsbachParser.T__9]:
@@ -848,11 +865,18 @@ class jsbachParser ( Parser ):
                 self.state = 84
                 self.match(jsbachParser.VAR)
                 pass
+            elif token in [jsbachParser.NOTE]:
+                localctx = jsbachParser.NoteContext(self, localctx)
+                self._ctx = localctx
+                _prevctx = localctx
+                self.state = 85
+                self.match(jsbachParser.NOTE)
+                pass
             else:
                 raise NoViableAltException(self)
 
             self._ctx.stop = self._input.LT(-1)
-            self.state = 104
+            self.state = 105
             self._errHandler.sync(self)
             _alt = self._interp.adaptivePredict(self._input,6,self._ctx)
             while _alt!=2 and _alt!=ATN.INVALID_ALT_NUMBER:
@@ -860,76 +884,76 @@ class jsbachParser ( Parser ):
                     if self._parseListeners is not None:
                         self.triggerExitRuleEvent()
                     _prevctx = localctx
-                    self.state = 102
+                    self.state = 103
                     self._errHandler.sync(self)
                     la_ = self._interp.adaptivePredict(self._input,5,self._ctx)
                     if la_ == 1:
                         localctx = jsbachParser.DivContext(self, jsbachParser.ExprContext(self, _parentctx, _parentState))
                         self.pushNewRecursionContext(localctx, _startState, self.RULE_expr)
-                        self.state = 87
-                        if not self.precpred(self._ctx, 7):
-                            from antlr4.error.Errors import FailedPredicateException
-                            raise FailedPredicateException(self, "self.precpred(self._ctx, 7)")
                         self.state = 88
-                        self.match(jsbachParser.DIV)
+                        if not self.precpred(self._ctx, 8):
+                            from antlr4.error.Errors import FailedPredicateException
+                            raise FailedPredicateException(self, "self.precpred(self._ctx, 8)")
                         self.state = 89
-                        self.expr(8)
+                        self.match(jsbachParser.DIV)
+                        self.state = 90
+                        self.expr(9)
                         pass
 
                     elif la_ == 2:
                         localctx = jsbachParser.MultContext(self, jsbachParser.ExprContext(self, _parentctx, _parentState))
                         self.pushNewRecursionContext(localctx, _startState, self.RULE_expr)
-                        self.state = 90
-                        if not self.precpred(self._ctx, 6):
-                            from antlr4.error.Errors import FailedPredicateException
-                            raise FailedPredicateException(self, "self.precpred(self._ctx, 6)")
                         self.state = 91
-                        self.match(jsbachParser.MULT)
+                        if not self.precpred(self._ctx, 7):
+                            from antlr4.error.Errors import FailedPredicateException
+                            raise FailedPredicateException(self, "self.precpred(self._ctx, 7)")
                         self.state = 92
-                        self.expr(7)
+                        self.match(jsbachParser.MULT)
+                        self.state = 93
+                        self.expr(8)
                         pass
 
                     elif la_ == 3:
                         localctx = jsbachParser.RemContext(self, jsbachParser.ExprContext(self, _parentctx, _parentState))
                         self.pushNewRecursionContext(localctx, _startState, self.RULE_expr)
-                        self.state = 93
-                        if not self.precpred(self._ctx, 5):
-                            from antlr4.error.Errors import FailedPredicateException
-                            raise FailedPredicateException(self, "self.precpred(self._ctx, 5)")
                         self.state = 94
-                        self.match(jsbachParser.REM)
+                        if not self.precpred(self._ctx, 6):
+                            from antlr4.error.Errors import FailedPredicateException
+                            raise FailedPredicateException(self, "self.precpred(self._ctx, 6)")
                         self.state = 95
-                        self.expr(6)
+                        self.match(jsbachParser.REM)
+                        self.state = 96
+                        self.expr(7)
                         pass
 
                     elif la_ == 4:
                         localctx = jsbachParser.AddContext(self, jsbachParser.ExprContext(self, _parentctx, _parentState))
                         self.pushNewRecursionContext(localctx, _startState, self.RULE_expr)
-                        self.state = 96
-                        if not self.precpred(self._ctx, 4):
-                            from antlr4.error.Errors import FailedPredicateException
-                            raise FailedPredicateException(self, "self.precpred(self._ctx, 4)")
                         self.state = 97
-                        self.match(jsbachParser.ADD)
+                        if not self.precpred(self._ctx, 5):
+                            from antlr4.error.Errors import FailedPredicateException
+                            raise FailedPredicateException(self, "self.precpred(self._ctx, 5)")
                         self.state = 98
-                        self.expr(5)
+                        self.match(jsbachParser.ADD)
+                        self.state = 99
+                        self.expr(6)
                         pass
 
                     elif la_ == 5:
                         localctx = jsbachParser.SubContext(self, jsbachParser.ExprContext(self, _parentctx, _parentState))
                         self.pushNewRecursionContext(localctx, _startState, self.RULE_expr)
-                        self.state = 99
-                        if not self.precpred(self._ctx, 3):
-                            from antlr4.error.Errors import FailedPredicateException
-                            raise FailedPredicateException(self, "self.precpred(self._ctx, 3)")
                         self.state = 100
-                        self.match(jsbachParser.SUBS)
+                        if not self.precpred(self._ctx, 4):
+                            from antlr4.error.Errors import FailedPredicateException
+                            raise FailedPredicateException(self, "self.precpred(self._ctx, 4)")
                         self.state = 101
-                        self.expr(4)
+                        self.match(jsbachParser.SUBS)
+                        self.state = 102
+                        self.expr(5)
                         pass
 
              
-                self.state = 106
+                self.state = 107
                 self._errHandler.sync(self)
                 _alt = self._interp.adaptivePredict(self._input,6,self._ctx)
 
@@ -974,13 +998,13 @@ class jsbachParser ( Parser ):
         self._la = 0 # Token type
         try:
             self.enterOuterAlt(localctx, 1)
-            self.state = 110
+            self.state = 111
             self._errHandler.sync(self)
             _la = self._input.LA(1)
             while _la==jsbachParser.VAR:
-                self.state = 107
+                self.state = 108
                 self.match(jsbachParser.VAR)
-                self.state = 112
+                self.state = 113
                 self._errHandler.sync(self)
                 _la = self._input.LA(1)
 
@@ -1025,14 +1049,14 @@ class jsbachParser ( Parser ):
         self.enterRule(localctx, 14, self.RULE_param)
         try:
             self.enterOuterAlt(localctx, 1)
-            self.state = 116
+            self.state = 117
             self._errHandler.sync(self)
             _alt = self._interp.adaptivePredict(self._input,8,self._ctx)
             while _alt!=2 and _alt!=ATN.INVALID_ALT_NUMBER:
                 if _alt==1:
-                    self.state = 113
+                    self.state = 114
                     self.expr(0) 
-                self.state = 118
+                self.state = 119
                 self._errHandler.sync(self)
                 _alt = self._interp.adaptivePredict(self._input,8,self._ctx)
 
@@ -1080,11 +1104,11 @@ class jsbachParser ( Parser ):
         self.enterRule(localctx, 16, self.RULE_cond)
         try:
             self.enterOuterAlt(localctx, 1)
-            self.state = 119
-            self.expr(0)
             self.state = 120
-            self.match(jsbachParser.COMP)
+            self.expr(0)
             self.state = 121
+            self.match(jsbachParser.COMP)
+            self.state = 122
             self.expr(0)
         except RecognitionException as re:
             localctx.exception = re
@@ -1126,17 +1150,17 @@ class jsbachParser ( Parser ):
         localctx = jsbachParser.PrintableContext(self, self._ctx, self.state)
         self.enterRule(localctx, 18, self.RULE_printable)
         try:
-            self.state = 125
+            self.state = 126
             self._errHandler.sync(self)
             token = self._input.LA(1)
-            if token in [jsbachParser.T__9, jsbachParser.VAR, jsbachParser.NUM]:
+            if token in [jsbachParser.T__9, jsbachParser.VAR, jsbachParser.NOTE, jsbachParser.NUM]:
                 self.enterOuterAlt(localctx, 1)
-                self.state = 123
+                self.state = 124
                 self.expr(0)
                 pass
             elif token in [jsbachParser.STR]:
                 self.enterOuterAlt(localctx, 2)
-                self.state = 124
+                self.state = 125
                 self.match(jsbachParser.STR)
                 pass
             else:
@@ -1164,23 +1188,23 @@ class jsbachParser ( Parser ):
 
     def expr_sempred(self, localctx:ExprContext, predIndex:int):
             if predIndex == 0:
-                return self.precpred(self._ctx, 7)
+                return self.precpred(self._ctx, 8)
          
 
             if predIndex == 1:
-                return self.precpred(self._ctx, 6)
+                return self.precpred(self._ctx, 7)
          
 
             if predIndex == 2:
-                return self.precpred(self._ctx, 5)
+                return self.precpred(self._ctx, 6)
          
 
             if predIndex == 3:
-                return self.precpred(self._ctx, 4)
+                return self.precpred(self._ctx, 5)
          
 
             if predIndex == 4:
-                return self.precpred(self._ctx, 3)
+                return self.precpred(self._ctx, 4)
          
 
 

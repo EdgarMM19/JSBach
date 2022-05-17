@@ -84,6 +84,11 @@ class jsbachVisitor(ParseTreeVisitor):
         return self.visitChildren(ctx)
 
 
+    # Visit a parse tree produced by jsbachParser#note.
+    def visitNote(self, ctx:jsbachParser.NoteContext):
+        return self.visitChildren(ctx)
+
+
     # Visit a parse tree produced by jsbachParser#sub.
     def visitSub(self, ctx:jsbachParser.SubContext):
         return self.visitChildren(ctx)

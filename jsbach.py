@@ -8,6 +8,7 @@ else:
     from jsbachLexer import jsbachLexer
 
 from antlr4 import *
+import sys
 
 class TreeVisitor(jsbachVisitor):
     def __init__(self):
@@ -25,6 +26,15 @@ class TreeVisitor(jsbachVisitor):
     def setValueOfSimbol(self, name, val):
         self.simbols[-1][name] = val
         return self.simbols[-1][name]
+
+    def noteToInt(self, note):
+        if len(note) == 1:
+            note = note + "4"
+        val = ord(note[0])-ord('A')
+        if val > 1:
+            val -= 7
+        val += 7*(ord(note[1])-ord('0'))
+        return val
     # end variables
 
     ##
@@ -58,6 +68,10 @@ class TreeVisitor(jsbachVisitor):
         l = list(ctx.getChildren())
         return self.visit(l[0]) * self.visit(l[2])
 
+    # Visit a parse tree produced by jsbachParser#rem.
+    def visitRem(self, ctx):
+        l = list(ctx.getChildren())
+        return self.visit(l[0]) % self.visit(l[2])
 
     # Visit a parse tree produced by jsbachParser#var.
     def visitVar(self, ctx):
@@ -70,11 +84,11 @@ class TreeVisitor(jsbachVisitor):
         l = list(ctx.getChildren())
         return int(l[0].getText())
 
-
-    # Visit a parse tree produced by jsbachParser#rem.
-    def visitRem(self, ctx):
+    # Visit a parse tree produced by jsbachParser#note.
+    def visitNote(self, ctx):
         l = list(ctx.getChildren())
-        return self.visit(l[0]) % self.visit(l[2])
+        return self.noteToInt(l[0].getText())
+
     ##
     ## end arithmetic expressions visitors
     ##
@@ -150,7 +164,7 @@ class TreeVisitor(jsbachVisitor):
         (codi, paramsNames) = self.functions[nom]
 
         self.simbols.append({})
-        for (x,y) in zip(paramsNames, param):
+        for (x,y) in zip(paramsNames, param): #todo: different number of parameters
             self.setValueOfSimbol(x,y) # todo: Arrays are passed by reference
         sol = self.visit(codi)
         self.simbols.pop()
@@ -217,7 +231,7 @@ class TreeVisitor(jsbachVisitor):
 
 
 def main():
-    input_stream = StdinStream()
+    input_stream = FileStream(sys.argv[1])
 
     lexer = jsbachLexer(input_stream)
     token_stream = CommonTokenStream(lexer)
@@ -228,9 +242,6 @@ def main():
     visitor.visit(tree)
 
     visitor.run("Main")
-
-#visitor = TreeVisitor()
-#visitor.visit(tree)
 
 if __name__ == "__main__":
     main()
