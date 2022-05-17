@@ -40,7 +40,7 @@ class TreeVisitor(jsbachVisitor):
     # Visit a parse tree produced by jsbachParser#div.
     def visitDiv(self, ctx):
         l = list(ctx.getChildren())
-        return self.visit(l[1]) // self.visit(l[1])
+        return self.visit(l[0]) // self.visit(l[2])
 
     # Visit a parse tree produced by jsbachParser#add.
     def visitAdd(self, ctx):
@@ -50,13 +50,13 @@ class TreeVisitor(jsbachVisitor):
     # Visit a parse tree produced by jsbachParser#sub.
     def visitSub(self, ctx):
         l = list(ctx.getChildren())
-        return self.visit(l[1]) - self.visit(l[1])
+        return self.visit(l[0]) - self.visit(l[2])
 
 
     # Visit a parse tree produced by jsbachParser#mult.
     def visitMult(self, ctx):
         l = list(ctx.getChildren())
-        return self.visit(l[1]) * self.visit(l[1])
+        return self.visit(l[0]) * self.visit(l[2])
 
 
     # Visit a parse tree produced by jsbachParser#var.
@@ -74,7 +74,7 @@ class TreeVisitor(jsbachVisitor):
     # Visit a parse tree produced by jsbachParser#rem.
     def visitRem(self, ctx):
         l = list(ctx.getChildren())
-        return self.visit(l[1]) % self.visit(l[1])
+        return self.visit(l[0]) % self.visit(l[2])
     ##
     ## end arithmetic expressions visitors
     ##
@@ -94,7 +94,15 @@ class TreeVisitor(jsbachVisitor):
     # Visit a parse tree produced by jsbachParser#wrt.
     def visitWrt(self, ctx):
         l = list(ctx.getChildren())
-        print(str(self.visit(l[1])))
+        out = ""
+        for pr in l[1:]:
+            partial = str(self.visit(pr))
+            if partial == "None":
+                partial = pr.getText().replace("\"","")
+            if len(out) != 0:
+                out = out + " "
+            out = out + partial
+        print(out)
 
 
     # Visit a parse tree produced by jsbachParser#read.
@@ -204,7 +212,6 @@ class TreeVisitor(jsbachVisitor):
     def run(self, funName):
         # TODO: run from not main with values
         self.simbols.append({})
-        print(self.functions)
         (codi, paramsNames) = self.functions[funName]
         self.visit(codi)
 

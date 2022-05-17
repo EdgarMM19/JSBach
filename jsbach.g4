@@ -15,7 +15,7 @@ codeblock : (line)+;
 
 line : 
            VAR  '<-'  expr                                                 # assign /* TODO: LLISTES */
-        |  '<!>'  expr                                                     # wrt /* TODO: escriure moltes coses, lletra, llistes */
+        |  '<!>' (printable)+                                                # wrt /* TODO: escriure moltes coses, lletra, llistes */
         |  '<?>'  VAR                                                      # read
         |  '<:>'  NOTE                                                     # repr /* TODO: llistes de notes */
         |  'if' cond '|:'  codeblock ':|' 'else' '|:' codeblock ':|'       # ifelse 
@@ -44,6 +44,10 @@ param :
 
 cond :  expr  COMP  expr  ;
 
+printable : expr
+            | STR;
+
+STR : '"' (~[ \n\r])+ '"';
 
 LN : '\n' | EOF;
 VAR : [a-z][A-Za-z0-9]*;
@@ -61,4 +65,4 @@ COMP : '=' | '<' | '>' | '/=' | '<=' | '>=' ;
 
 WS : [ \n\t\r]+ -> skip ;
 
-/* COMMENT : '~''~''~'~'~''~''~' -> skip; */
+/* COMMENT : '~''~''~'~'~''~''~' -> skip; TODO */
