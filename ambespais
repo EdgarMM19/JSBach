@@ -1,0 +1,67 @@
+grammar jsbach;
+
+/* todo: llistes i musica */
+/* todo: pensar sobre els salts de linea */
+root : 
+        functions
+        ;
+
+functions : func+ ;
+
+func : FNME WS? fheader WS? NL codeblock WS? ':|' WS? NL ;
+
+codeblock : (line)+;
+
+line : 
+          WS? VAR WS? '<-' WS? expr  NL                              # assign /* TODO: LLISTES */
+        | WS? '<!>' WS? expr NL                                 # wrt /* TODO: escriure moltes coses, lletra, llistes */
+        | WS? '<?>' WS? VAR WS? NL                                  # read
+        | WS? '<:>' WS? NOTE WS? NL                                 # repr /* TODO: llistes de notes */
+        /*| 'if' cond '|:' NL codeblock ':|' NL         # ifelse TODO */
+        | WS? 'if' WS? cond WS? '|:' WS? NL codeblock WS? ':|' WS? NL           # if
+        | WS? 'while' WS? cond WS? '|:' WS? NL codeblock WS? ':|' WS? NL        # while
+        /* | 'return' expr                              # ret TODO: afegir-ho */ 
+        | WS? NL                                         # wsnl
+        | NL                                            # nl
+        ;
+
+expr :
+     '(' WS? expr ')'           # par
+    |  expr WS? DIV WS? expr WS?      # div
+    | expr WS? MULT WS? expr  WS?      # mult
+    | expr WS? REM WS? expr  WS?     # rem
+    | expr WS? ADD WS? expr  WS?        # mes
+    | expr WS? SUBS WS? expr  WS?        # subs
+    | FNME param     WS?       # call
+    | NUM         WS?        # num
+    | VAR      WS?          # var
+    ;
+
+fheader :
+    '|:'
+    | (VAR WS)* WS? '|:';
+
+param :
+    
+   | expr (' ' expr)*;
+
+cond : WS? expr WS? COMP WS? expr WS? ;
+
+
+NL : '\n' | EOF;
+VAR : [a-z][A-Za-z0-9]*;
+FNME : [A-Z][A-Za-z0-9]*;
+NOTE: [A-C][0-8]; /* TODO: ferho be */
+NUM : [0-9]+ ;
+
+
+ADD : '+' ;
+MULT : '*' ;
+DIV : '/' ;
+SUBS : '-' ;
+REM : '%' ;
+COMP : '=' | '<' | '>' | '/=' | '<=' | '>=' ;
+
+WS : ' '+; /* TODO */
+
+/* COMMENT : '~''~''~'~'~''~''~' -> skip; */
