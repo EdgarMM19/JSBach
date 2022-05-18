@@ -15,9 +15,9 @@ codeblock : (line)+;
 
 line : 
            VAR  '<-'  expr                                                 # assign /* TODO: LLISTES */
-        |  '<!>' (printable)+                                              # wrt /* TODO: escriure moltes coses, lletra, llistes */
+        |  '<!>' (printable)+                                              # wrt /* TODO: llistes */
         |  '<?>' VAR                                                       # read
-        |  '<:>' EXPR                                                      # repr /* TODO: llistes de notes */
+        |  '<:>' expr                                                      # repr /* TODO: llistes de notes */
         |  'if' cond '|:'  codeblock ':|' 'else' '|:' codeblock ':|'       # ifelse 
         |  'if'  cond  '|:'   codeblock  ':|'                              # if
         |  'while'  cond  '|:'   codeblock  ':|'                           # while
@@ -27,7 +27,7 @@ line :
 
 expr :
      '('  expr ')'           # par
-    |  expr  DIV  expr       # div
+    | expr  DIV  expr       # div
     | expr  MULT  expr       # mult
     | expr  REM  expr        # rem
     | expr  ADD  expr        # add
@@ -49,15 +49,15 @@ printable : expr
             | STR;
 
 STR : '"' (~[\n\r"])+ '"';
+NOTE: [A-B]'0'
+    | [A-G][1-7]
+    | [A-G]
+    | 'C8' ;
 
 LN : '\n' | EOF;
 VAR : [a-z][A-Za-z0-9]*;
 FNME : [A-Z][A-Za-z0-9]*; 
-NOTE: [A-B]'0' 
-    | [A-G][1-7]
-    | [A-G]
-    | 'C8' ; 
-NUM : [0-9]+ ;
+NUM : [0-9]+ ; /* todo: add negative numbers? */
 
 
 ADD : '+' ;

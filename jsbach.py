@@ -9,12 +9,12 @@ else:
 
 from antlr4 import *
 import sys
-
+from subprocess import DEVNULL, STDOUT, check_call
 class TreeVisitor(jsbachVisitor):
     def __init__(self):
         self.simbols = []
         self.functions = {}
-
+        self.notes = []
     # variables work
     def getValueOfSimbol(self, name):
         if name in self.simbols[-1]:
@@ -112,7 +112,7 @@ class TreeVisitor(jsbachVisitor):
         for pr in l[1:]:
             partial = str(self.visit(pr))
             if partial == "None":
-                partial = pr.getText().replace("\"","")
+                partial = pr.getText().replace("\"","") # TODO: millorar aixo
             if len(out) != 0:
                 out = out + " "
             out = out + partial
@@ -128,8 +128,9 @@ class TreeVisitor(jsbachVisitor):
 
     # Visit a parse tree produced by jsbachParser#repr.
     def visitRepr(self, ctx):
-        # TODO
-        return self.visitChildren(ctx)
+        l = list(ctx.getChildren())
+        note = self.visit(l[1])
+        self.notes.append(note)
 
 
     # Visit a parse tree produced by jsbachParser#ifelse.
@@ -229,6 +230,39 @@ class TreeVisitor(jsbachVisitor):
         (codi, paramsNames) = self.functions[funName]
         self.visit(codi)
 
+    def getNotes(self):
+        return self.notes
+
+
+
+def intToNote(id):
+        letter = chr(ord("a") + id % 7)
+
+        number = (id + 5) // 7
+        scale = ""
+        if number > 3:
+            scale = "'"*(number-3)
+        elif number < 3:
+            scale = ","*(3-number)
+        return letter + scale + "4"
+
+def generateLily(fileName, notes):
+    f = open(fileName + ".lily", "w")
+    f.write( "\\version \"2.22.1\"\n")
+    f.write( "\\score {\n")
+    f.write( "\\absolute {\n")
+    f.write( "\\tempo 4 = 120\n")
+
+    notes2 = [intToNote(note) for note in notes]
+    outNotes = ' '.join(notes2)
+    f.write(outNotes)
+
+    f.write( "}\n")
+    f.write( "\\layout { }\n")
+    f.write( "\\midi { }\n")
+    f.write( "}\n")    
+   
+
 
 def main():
     input_stream = FileStream(sys.argv[1])
@@ -242,6 +276,11 @@ def main():
     visitor.visit(tree)
 
     visitor.run("Main")
+
+    notes = visitor.getNotes()
+
+    generateLily(sys.argv[1].replace(".jsb",""), notes) 
+    check_call(['lilypond', sys.argv[1].replace(".jsb",".lily")], stdout=DEVNULL, stderr=STDOUT)
 
 if __name__ == "__main__":
     main()
