@@ -12,10 +12,8 @@ import sys
 import os
 from subprocess import DEVNULL, STDOUT, check_call
 
-#Extres: unary -, comensar amb parametres, NoPlay
-# todo: simbols raros
+# Extres: unary -, comensar amb parametres, NoPlay
 # todo: errors de intentar usar enters com llistes?
-# segur que es pasa per ref? testejar
 
 class TreeVisitor(jsbachVisitor):
     def __init__(self):
@@ -356,7 +354,7 @@ def main():
         if arg == "-NP":
             reproduce = False
     programName = sys.argv[1].replace(".jsb", "")
-    input_stream = FileStream(programName + ".jsb")
+    input_stream = FileStream(programName + ".jsb", encoding='utf-8')
 
     lexer = jsbachLexer(input_stream)
     token_stream = CommonTokenStream(lexer)
@@ -373,10 +371,11 @@ def main():
     beginAt = "Main"
     args = []
     if len(sys.argv) > 2:
-        beginAt = sys.argv[2]
-        for arg in sys.argv[3:]:
-            if arg != "-NP":
-                args.append(int(arg))
+        if sys.argv[2] != "-NP":
+            beginAt = sys.argv[2]
+            for arg in sys.argv[3:]:
+                if arg != "-NP":
+                    args.append(int(arg))
     try:
         visitor.run(beginAt, args)
     except Exception as err:

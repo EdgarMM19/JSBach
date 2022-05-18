@@ -1,4 +1,4 @@
-Alle_Schlussel |:
+Alle_Schlüssel |:
     note <- A0
     while note <= C8 |:
         <:> note
