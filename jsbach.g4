@@ -1,7 +1,5 @@
 grammar jsbach;
 
-/* todo: llistes i musica */
-/* todo: pensar sobre els salts de linea */
 root : 
         functions
         EOF
@@ -11,23 +9,28 @@ functions : func+ ;
 
 func : FNME fheader '|:' codeblock  ':|' ;
 
-codeblock : (line)+;
+codeblock : (line)*;
 
 line : 
-           VAR  '<-'  expr                                                 # assign /* TODO: LLISTES */
+           VAR '<-' assignable                                                   # assign
         |  '<!>' (printable)+                                              # wrt /* TODO: llistes */
         |  '<?>' VAR                                                       # read
-        |  '<:>' expr                                                      # repr /* TODO: llistes de notes */
+        |  '<:>' expr                                                      # repr
+        |  '<:>' list                                                      # listrepr
         |  'if' cond '|:'  codeblock ':|' 'else' '|:' codeblock ':|'       # ifelse 
         |  'if'  cond  '|:'   codeblock  ':|'                              # if
         |  'while'  cond  '|:'   codeblock  ':|'                           # while
+        |  VAR '<<' expr                                                   # append
+        |  '8<' VAR '[' expr ']'                                           # delete
         /* | 'return' expr                                                 # ret TODO: afegir-ho */ 
         | FNME param                                                       # call
         ;
 
 expr :
      '('  expr ')'           # par
-    | expr  DIV  expr       # div
+    | '#' VAR                # listlength
+    | VAR '[' expr ']'       # listaccess
+    | expr  DIV  expr        # div
     | expr  MULT  expr       # mult
     | expr  REM  expr        # rem
     | expr  ADD  expr        # add
@@ -45,8 +48,15 @@ param :
 
 cond :  expr  COMP  expr  ;
 
+assignable : expr
+            | list;
+
 printable : expr
+            | list
             | STR;
+
+list : '{' (expr)* '}' ;
+
 
 STR : '"' (~[\n\r"])+ '"';
 NOTE: [A-B]'0'
@@ -56,7 +66,7 @@ NOTE: [A-B]'0'
 
 LN : '\n' | EOF;
 VAR : [a-z][A-Za-z0-9]*;
-FNME : [A-Z][A-Za-z0-9]*; 
+FNME : [A-Z][A-Za-z0-9_]*; 
 NUM : [0-9]+ ; /* todo: add negative numbers? */
 
 

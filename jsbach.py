@@ -10,6 +10,8 @@ else:
 from antlr4 import *
 import sys
 from subprocess import DEVNULL, STDOUT, check_call
+
+# todo: simbols raros
 class TreeVisitor(jsbachVisitor):
     def __init__(self):
         self.simbols = []
@@ -78,6 +80,17 @@ class TreeVisitor(jsbachVisitor):
         l = list(ctx.getChildren())
         return self.getValueOfSimbol(l[0].getText())
 
+    def visitListlength(self, ctx):
+        l = list(ctx.getChildren())
+        a = self.getValueOfSimbol(l[1].getText())
+        return len(a)
+
+    # Visit a parse tree produced by jsbachParser#listaccess.
+    def visitListaccess(self, ctx:jsbachParser.ListaccessContext):
+        l = list(ctx.getChildren())
+        a = self.getValueOfSimbol(l[0].getText()) #todo: bad length
+        index = self.visit(l[2])-1
+        return a[index]
 
     # Visit a parse tree produced by jsbachParser#num.
     def visitNum(self, ctx):
@@ -104,15 +117,19 @@ class TreeVisitor(jsbachVisitor):
         val = self.visit(l[2])
         self.setValueOfSimbol(nom, val)
 
-
     # Visit a parse tree produced by jsbachParser#wrt.
     def visitWrt(self, ctx):
-        l = list(ctx.getChildren())
+        l = list(ctx.getChildren()) # todo: work with lists
         out = ""
         for pr in l[1:]:
-            partial = str(self.visit(pr))
-            if partial == "None":
+            partial = self.visit(pr)
+            if partial == None:
                 partial = pr.getText().replace("\"","") # TODO: millorar aixo
+            elif isinstance(partial, list):
+                partial = [str(x) for x in partial]
+                partial = "{" + " ".join(partial) + "}"
+            else:
+                partial = str(partial)
             if len(out) != 0:
                 out = out + " "
             out = out + partial
@@ -132,6 +149,12 @@ class TreeVisitor(jsbachVisitor):
         note = self.visit(l[1])
         self.notes.append(note)
 
+    # Visit a parse tree produced by jsbachParser#listrepr.
+    def visitListrepr(self, ctx):
+        l = list(ctx.getChildren())
+        a = self.visit(l[1])
+        for note in a:
+            self.notes.append(note)
 
     # Visit a parse tree produced by jsbachParser#ifelse.
     def visitIfelse(self, ctx):
@@ -157,6 +180,18 @@ class TreeVisitor(jsbachVisitor):
             if ret != None: #TODO: this is for returns in functions, have to see
                 return ret
 
+    def visitAppend(self, ctx):
+        l = list(ctx.getChildren())
+        a = self.getValueOfSimbol(l[0].getText())
+        a.append(self.visit(l[2]))
+
+    # Visit a parse tree produced by jsbachParser#delete.
+    def visitDelete(self, ctx):
+        l = list(ctx.getChildren())
+        a = self.getValueOfSimbol(l[1].getText()) #todo: bad length
+        index = self.visit(l[3])-1
+        a.pop(index)
+
     # Visit a parse tree produced by jsbachParser#call.
     def visitCall(self, ctx):
         l = list(ctx.getChildren())
@@ -174,6 +209,14 @@ class TreeVisitor(jsbachVisitor):
     ##
     ## End visit line instructions
     ##
+
+    # Visit a parse tree produced by jsbachParser#list.
+    def visitList(self, ctx):
+        a = []
+        l = list(ctx.getChildren())
+        for elem in l[1:-1]:
+            a.append(self.visit(elem))
+        return a
 
     def visitCond(self, ctx):
         l = list(ctx.getChildren())
@@ -227,6 +270,7 @@ class TreeVisitor(jsbachVisitor):
     def run(self, funName):
         # TODO: run from not main with values
         self.simbols.append({})
+        print(self.functions)
         (codi, paramsNames) = self.functions[funName]
         self.visit(codi)
 
@@ -275,12 +319,17 @@ def main():
     visitor = TreeVisitor()
     visitor.visit(tree)
 
-    visitor.run("Main")
+    beginAt = "Main"
+    if len(sys.argv) > 2:
+        beginAt = sys.argv[2]
+    visitor.run(beginAt)
 
     notes = visitor.getNotes()
 
     generateLily(sys.argv[1].replace(".jsb",""), notes) 
-    check_call(['lilypond', sys.argv[1].replace(".jsb",".lily")], stdout=DEVNULL, stderr=STDOUT)
+    # canvi de stdout per que no surti per terminal
+    check_call(['lilypond', sys.argv[1].replace(".jsb",".lily")], stdout=DEVNULL, stderr=STDOUT) 
+
 
 if __name__ == "__main__":
     main()

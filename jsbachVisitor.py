@@ -49,6 +49,11 @@ class jsbachVisitor(ParseTreeVisitor):
         return self.visitChildren(ctx)
 
 
+    # Visit a parse tree produced by jsbachParser#listrepr.
+    def visitListrepr(self, ctx:jsbachParser.ListreprContext):
+        return self.visitChildren(ctx)
+
+
     # Visit a parse tree produced by jsbachParser#ifelse.
     def visitIfelse(self, ctx:jsbachParser.IfelseContext):
         return self.visitChildren(ctx)
@@ -61,6 +66,16 @@ class jsbachVisitor(ParseTreeVisitor):
 
     # Visit a parse tree produced by jsbachParser#while.
     def visitWhile(self, ctx:jsbachParser.WhileContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by jsbachParser#append.
+    def visitAppend(self, ctx:jsbachParser.AppendContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by jsbachParser#delete.
+    def visitDelete(self, ctx:jsbachParser.DeleteContext):
         return self.visitChildren(ctx)
 
 
@@ -81,6 +96,11 @@ class jsbachVisitor(ParseTreeVisitor):
 
     # Visit a parse tree produced by jsbachParser#add.
     def visitAdd(self, ctx:jsbachParser.AddContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by jsbachParser#listlength.
+    def visitListlength(self, ctx:jsbachParser.ListlengthContext):
         return self.visitChildren(ctx)
 
 
@@ -114,6 +134,11 @@ class jsbachVisitor(ParseTreeVisitor):
         return self.visitChildren(ctx)
 
 
+    # Visit a parse tree produced by jsbachParser#listaccess.
+    def visitListaccess(self, ctx:jsbachParser.ListaccessContext):
+        return self.visitChildren(ctx)
+
+
     # Visit a parse tree produced by jsbachParser#fheader.
     def visitFheader(self, ctx:jsbachParser.FheaderContext):
         return self.visitChildren(ctx)
@@ -129,8 +154,18 @@ class jsbachVisitor(ParseTreeVisitor):
         return self.visitChildren(ctx)
 
 
+    # Visit a parse tree produced by jsbachParser#assignable.
+    def visitAssignable(self, ctx:jsbachParser.AssignableContext):
+        return self.visitChildren(ctx)
+
+
     # Visit a parse tree produced by jsbachParser#printable.
     def visitPrintable(self, ctx:jsbachParser.PrintableContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by jsbachParser#list.
+    def visitList(self, ctx:jsbachParser.ListContext):
         return self.visitChildren(ctx)
 
 
