@@ -201,7 +201,7 @@ class TreeVisitor(jsbachVisitor):
 
         self.simbols.append({})
         for (x,y) in zip(paramsNames, param): #todo: different number of parameters
-            self.setValueOfSimbol(x,y) # todo: Arrays are passed by reference
+            self.setValueOfSimbol(x,y)
         sol = self.visit(codi)
         self.simbols.pop()
         return sol
@@ -309,7 +309,8 @@ def generateLily(fileName, notes):
 
 
 def main():
-    input_stream = FileStream(sys.argv[1])
+    programName = sys.argv[1].replace(".jsb","")
+    input_stream = FileStream(programName + ".jsb")
 
     lexer = jsbachLexer(input_stream)
     token_stream = CommonTokenStream(lexer)
@@ -326,10 +327,14 @@ def main():
 
     notes = visitor.getNotes()
 
-    generateLily(sys.argv[1].replace(".jsb",""), notes) 
+    generateLily(programName, notes) 
     # canvi de stdout per que no surti per terminal
-    check_call(['lilypond', sys.argv[1].replace(".jsb",".lily")], stdout=DEVNULL, stderr=STDOUT) 
-
+    check_call(['lilypond', programName + ".lily"], stdout=DEVNULL, stderr=STDOUT) 
+    check_call(['timidity', '-Ow', '-o', programName+ ".wav", programName + ".midi"], stdout=DEVNULL, stderr=STDOUT)
+    print(' '.join(['ffmpeg', '-i', programName + ".wav", '-codec:a', 'libmp3lame', '-qscale:a', '2', programName + ".mp3"]))
+    check_call(['ffmpeg', '-i', programName + ".wav", '-codec:a', 'libmp3lame', '-qscale:a', '2', programName + ".mp3"], stdout=STDOUT, stderr=STDOUT) 
+ 
+    check_call(['afplay', programName + ".mp3"], stdout=DEVNULL, stderr=STDOUT) 
 
 if __name__ == "__main__":
     main()

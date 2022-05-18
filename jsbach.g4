@@ -12,8 +12,8 @@ func : FNME fheader '|:' codeblock  ':|' ;
 codeblock : (line)*;
 
 line : 
-           VAR '<-' assignable                                                   # assign
-        |  '<!>' (printable)+                                              # wrt /* TODO: llistes */
+           VAR '<-' assignable                                             # assign
+        |  '<!>' (printable)+                                              # wrt 
         |  '<?>' VAR                                                       # read
         |  '<:>' expr                                                      # repr
         |  '<:>' list                                                      # listrepr
