@@ -9,6 +9,7 @@ else:
 
 from antlr4 import *
 import sys
+import os
 from subprocess import DEVNULL, STDOUT, check_call
 
 # todo: simbols raros
@@ -270,7 +271,6 @@ class TreeVisitor(jsbachVisitor):
     def run(self, funName):
         # TODO: run from not main with values
         self.simbols.append({})
-        print(self.functions)
         (codi, paramsNames) = self.functions[funName]
         self.visit(codi)
 
@@ -305,7 +305,7 @@ def generateLily(fileName, notes):
     f.write( "\\layout { }\n")
     f.write( "\\midi { }\n")
     f.write( "}\n")    
-   
+    f.close()
 
 
 def main():
@@ -331,8 +331,8 @@ def main():
     # canvi de stdout per que no surti per terminal
     check_call(['lilypond', programName + ".lily"], stdout=DEVNULL, stderr=STDOUT) 
     check_call(['timidity', '-Ow', '-o', programName+ ".wav", programName + ".midi"], stdout=DEVNULL, stderr=STDOUT)
-    print(' '.join(['ffmpeg', '-i', programName + ".wav", '-codec:a', 'libmp3lame', '-qscale:a', '2', programName + ".mp3"]))
-    check_call(['ffmpeg', '-i', programName + ".wav", '-codec:a', 'libmp3lame', '-qscale:a', '2', programName + ".mp3"], stdout=STDOUT, stderr=STDOUT) 
+    os.remove(programName + ".mp3")
+    os.system(' '.join(['ffmpeg', '-i', programName + ".wav", '-codec:a', 'libmp3lame', '-qscale:a', '2', programName + ".mp3", "2>/dev/null"]))
  
     check_call(['afplay', programName + ".mp3"], stdout=DEVNULL, stderr=STDOUT) 
 
