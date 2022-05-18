@@ -12,18 +12,15 @@ import sys
 import os
 from subprocess import DEVNULL, STDOUT, check_call
 
-#Extres: unary -, comensar amb parametres, NoPlay
 # todo: simbols raros
-# todo: errors de intentar usar enters com llistes?
-# segur que es pasa per ref? testejar
+
 
 class TreeVisitor(jsbachVisitor):
     def __init__(self):
         self.simbols = []
         self.functions = {}
         self.notes = []
-
-    # Variables management
+    # variables work
 
     def getValueOfSimbol(self, name):
         if name in self.simbols[-1]:
@@ -44,7 +41,7 @@ class TreeVisitor(jsbachVisitor):
             val -= 7
         val += 7*(ord(note[1])-ord('0'))
         return val
-    # End variables management
+    # end variables
 
     ##
     # arithmetic expressions visitors
@@ -59,11 +56,7 @@ class TreeVisitor(jsbachVisitor):
 
     def visitDiv(self, ctx):
         l = list(ctx.getChildren())
-        a = self.visit(l[0])
-        b = self.visit(l[2])
-        if b == 0:
-            raise Exception("Division by zero")
-        return a // b
+        return self.visit(l[0]) // self.visit(l[2])
 
     # Visit a parse tree produced by jsbachParser#add.
     def visitAdd(self, ctx):
@@ -103,10 +96,8 @@ class TreeVisitor(jsbachVisitor):
     # Visit a parse tree produced by jsbachParser#listaccess.
     def visitListaccess(self, ctx: jsbachParser.ListaccessContext):
         l = list(ctx.getChildren())
-        a = self.getValueOfSimbol(l[0].getText())
+        a = self.getValueOfSimbol(l[0].getText())  # todo: bad length
         index = self.visit(l[2])-1
-        if index < 0 or index >= len(a):
-            raise "Trying to acces element not in array bounds."
         return a[index]
 
     # Visit a parse tree produced by jsbachParser#num.
@@ -136,13 +127,12 @@ class TreeVisitor(jsbachVisitor):
 
     # Visit a parse tree produced by jsbachParser#wrt.
     def visitWrt(self, ctx):
-        l = list(ctx.getChildren())
+        l = list(ctx.getChildren())  # todo: work with lists
         out = ""
         for pr in l[1:]:
             partial = self.visit(pr)
-            # the only parameters of write are text, lists and integers
             if partial == None:
-                partial = pr.getText().replace("\"", "")
+                partial = pr.getText().replace("\"", "")  # TODO: millorar aixo
             elif isinstance(partial, list):
                 partial = [str(x) for x in partial]
                 partial = "{" + " ".join(partial) + "}"
@@ -208,25 +198,19 @@ class TreeVisitor(jsbachVisitor):
     # Visit a parse tree produced by jsbachParser#delete.
     def visitDelete(self, ctx):
         l = list(ctx.getChildren())
-        a = self.getValueOfSimbol(l[1].getText())
+        a = self.getValueOfSimbol(l[1].getText())  # todo: bad length
         index = self.visit(l[3])-1
-        if index < 0 or index >= len(a):
-            raise "Trying to delete element not in array bounds."
         a.pop(index)
 
     # Visit a parse tree produced by jsbachParser#call.
     def visitCall(self, ctx):
         l = list(ctx.getChildren())
-        funName = l[0].getText()
-        params = self.visit(l[1])
+        nom = l[0].getText()
+        param = self.visit(l[1])
+        (codi, paramsNames) = self.functions[nom]
 
-        if not funName in self.functions:
-            raise Exception("Function " + funName + " doesn't exists.")
-        (codi, paramsNames) = self.functions[funName]
-        if len(paramsNames) != len(params):
-            raise Exception("Function " + funName + " has " + str(len(paramsNames)) + " parameters but " + str(len(params)) + " were provided.")
         self.simbols.append({})
-        for (x, y) in zip(paramsNames, params):
+        for (x, y) in zip(paramsNames, param):  # todo: different number of parameters
             self.setValueOfSimbol(x, y)
         sol = self.visit(codi)
         self.simbols.pop()
@@ -264,20 +248,15 @@ class TreeVisitor(jsbachVisitor):
     ##
     def visitFunc(self, ctx):
         l = list(ctx.getChildren())
-        name = l[0].getText()
-        code = l[3]
+        nom = l[0].getText()
+        codi = l[3]
         params = self.visit(l[1])
-        if name in self.functions:
-            raise Exception("Function " + name + " is declared twice.")
-        self.functions[name] = (code, params)
+        self.functions[nom] = (codi, params)
 
     def visitFheader(self, ctx):
         l = list(ctx.getChildren())
         param = []
         for x in l:
-            if x.getText() in param:
-                raise Exception("Parameter " + x.getText() + " appears twice in function definition.")
-
             param.append(x.getText())
         return param
 
@@ -300,13 +279,10 @@ class TreeVisitor(jsbachVisitor):
     #            return ret
 
     def run(self, funName, params):
+        # TODO: run from not main with values
         self.simbols.append({})
-        if not funName in self.functions:
-            raise Exception("Function " + funName + " doesn't exists.")
         (codi, paramsNames) = self.functions[funName]
-        if len(paramsNames) != len(params):
-            raise Exception("Function " + funName + " has " + str(len(paramsNames)) + " but " + str(len(params)) + " were provided.")
-        for (x, y) in zip(paramsNames, params):
+        for (x, y) in zip(paramsNames, params):  # todo: different number of parameters
             self.setValueOfSimbol(x, y)
         self.visit(codi)
 
@@ -364,11 +340,7 @@ def main():
 
     tree = parser.root()
     visitor = TreeVisitor()
-    try:
-        visitor.visit(tree)
-    except Exception as err:
-        print("Bad program format: {0}".format(err))
-        return
+    visitor.visit(tree)
 
     beginAt = "Main"
     args = []
@@ -377,11 +349,8 @@ def main():
         for arg in sys.argv[3:]:
             if arg != "-NP":
                 args.append(int(arg))
-    try:
-        visitor.run(beginAt, args)
-    except Exception as err:
-        print("Execution error: {0}".format(err))
-        return
+
+    visitor.run(beginAt, args)
 
     notes = visitor.getNotes()
     # if no notes generated don't try to play music

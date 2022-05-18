@@ -35,6 +35,7 @@ expr :
     | expr  REM  expr        # rem
     | expr  ADD  expr        # add
     | expr  SUBS  expr       # sub
+    | SUBS expr              # unarysub
     | NUM                    # num
     | VAR                    # var
     | NOTE                   # note
@@ -65,9 +66,9 @@ NOTE: [A-B]'0'
     | 'C8' ;
 
 LN : '\n' | EOF;
-VAR : [a-z][A-Za-z0-9]*;
+VAR : [a-z][A-Za-z0-9_]*;
 FNME : [A-Z][A-Za-z0-9_]*; 
-NUM : [0-9]+ ; /* todo: add negative numbers? */
+NUM : '-'[0-9]+| [0-9]+ ;
 
 
 ADD : '+' ;

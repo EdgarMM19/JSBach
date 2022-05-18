@@ -139,6 +139,11 @@ class jsbachVisitor(ParseTreeVisitor):
         return self.visitChildren(ctx)
 
 
+    # Visit a parse tree produced by jsbachParser#unarysub.
+    def visitUnarysub(self, ctx:jsbachParser.UnarysubContext):
+        return self.visitChildren(ctx)
+
+
     # Visit a parse tree produced by jsbachParser#fheader.
     def visitFheader(self, ctx:jsbachParser.FheaderContext):
         return self.visitChildren(ctx)
