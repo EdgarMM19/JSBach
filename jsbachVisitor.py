@@ -79,6 +79,11 @@ class jsbachVisitor(ParseTreeVisitor):
         return self.visitChildren(ctx)
 
 
+    # Visit a parse tree produced by jsbachParser#ret.
+    def visitRet(self, ctx:jsbachParser.RetContext):
+        return self.visitChildren(ctx)
+
+
     # Visit a parse tree produced by jsbachParser#call.
     def visitCall(self, ctx:jsbachParser.CallContext):
         return self.visitChildren(ctx)
@@ -89,18 +94,8 @@ class jsbachVisitor(ParseTreeVisitor):
         return self.visitChildren(ctx)
 
 
-    # Visit a parse tree produced by jsbachParser#div.
-    def visitDiv(self, ctx:jsbachParser.DivContext):
-        return self.visitChildren(ctx)
-
-
     # Visit a parse tree produced by jsbachParser#add.
     def visitAdd(self, ctx:jsbachParser.AddContext):
-        return self.visitChildren(ctx)
-
-
-    # Visit a parse tree produced by jsbachParser#listlength.
-    def visitListlength(self, ctx:jsbachParser.ListlengthContext):
         return self.visitChildren(ctx)
 
 
@@ -129,11 +124,6 @@ class jsbachVisitor(ParseTreeVisitor):
         return self.visitChildren(ctx)
 
 
-    # Visit a parse tree produced by jsbachParser#rem.
-    def visitRem(self, ctx:jsbachParser.RemContext):
-        return self.visitChildren(ctx)
-
-
     # Visit a parse tree produced by jsbachParser#listaccess.
     def visitListaccess(self, ctx:jsbachParser.ListaccessContext):
         return self.visitChildren(ctx)
@@ -141,6 +131,26 @@ class jsbachVisitor(ParseTreeVisitor):
 
     # Visit a parse tree produced by jsbachParser#unarysub.
     def visitUnarysub(self, ctx:jsbachParser.UnarysubContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by jsbachParser#callInExpr.
+    def visitCallInExpr(self, ctx:jsbachParser.CallInExprContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by jsbachParser#div.
+    def visitDiv(self, ctx:jsbachParser.DivContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by jsbachParser#listlength.
+    def visitListlength(self, ctx:jsbachParser.ListlengthContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by jsbachParser#rem.
+    def visitRem(self, ctx:jsbachParser.RemContext):
         return self.visitChildren(ctx)
 
 

@@ -12,9 +12,6 @@ import sys
 import os
 from subprocess import DEVNULL, STDOUT, check_call
 
-# Extres: unary -, comensar amb parametres, NoPlay
-# todo: errors de intentar usar enters com llistes?
-
 class TreeVisitor(jsbachVisitor):
     def __init__(self):
         self.simbols = []
@@ -22,7 +19,6 @@ class TreeVisitor(jsbachVisitor):
         self.notes = []
 
     # Variables management
-
     def getValueOfSimbol(self, name):
         if name in self.simbols[-1]:
             return self.simbols[-1][name]
@@ -96,6 +92,8 @@ class TreeVisitor(jsbachVisitor):
     def visitListlength(self, ctx):
         l = list(ctx.getChildren())
         a = self.getValueOfSimbol(l[1].getText())
+        if not isinstance(a, list):
+            raise Exception("Can not get length of a non-list object " + l[0].getText())
         return len(a)
 
     # Visit a parse tree produced by jsbachParser#listaccess.
@@ -103,8 +101,10 @@ class TreeVisitor(jsbachVisitor):
         l = list(ctx.getChildren())
         a = self.getValueOfSimbol(l[0].getText())
         index = self.visit(l[2])-1
+        if not isinstance(a, list):
+            raise Exception("Can not access a non-list object " + l[0].getText())
         if index < 0 or index >= len(a):
-            raise "Trying to acces element not in array bounds."
+            raise Exception("Trying to acces element not in array bounds.")
         return a[index]
 
     # Visit a parse tree produced by jsbachParser#num.
@@ -116,6 +116,9 @@ class TreeVisitor(jsbachVisitor):
     def visitNote(self, ctx):
         l = list(ctx.getChildren())
         return self.noteToInt(l[0].getText())
+
+    def visitCallInExpr(self, ctx):
+        return self.visitCall(ctx)
 
     ##
     # end arithmetic expressions visitors
@@ -176,40 +179,40 @@ class TreeVisitor(jsbachVisitor):
     def visitIfelse(self, ctx):
         l = list(ctx.getChildren())
         if self.visit(l[1]):
-            # TODO: this is for returns in functions, have to see
             return self.visit(l[3])
         else:
             return self.visit(l[7])
 
     # Visit a parse tree produced by jsbachParser#if.
-
     def visitIf(self, ctx):
         l = list(ctx.getChildren())
         if self.visit(l[1]):
-            # TODO: this is for returns in functions, have to see
             return self.visit(l[3])
 
     # Visit a parse tree produced by jsbachParser#while.
-
     def visitWhile(self, ctx):
         l = list(ctx.getChildren())
         while self.visit(l[1]):
             ret = self.visit(l[3])
-            if ret != None:  # TODO: this is for returns in functions, have to see
+            if ret != None:
                 return ret
 
     def visitAppend(self, ctx):
         l = list(ctx.getChildren())
         a = self.getValueOfSimbol(l[0].getText())
+        if not isinstance(a, list):
+            raise Exception("Can not get append to a non-list object " + l[0].getText())
         a.append(self.visit(l[2]))
 
     # Visit a parse tree produced by jsbachParser#delete.
     def visitDelete(self, ctx):
         l = list(ctx.getChildren())
         a = self.getValueOfSimbol(l[1].getText())
+        if not isinstance(a, list):
+            raise Exception("Can not get delete an element of a non-list object " + l[0].getText())
         index = self.visit(l[3])-1
         if index < 0 or index >= len(a):
-            raise "Trying to delete element not in array bounds."
+            raise Exception("Trying to delete element not in array bounds.")
         a.pop(index)
 
     # Visit a parse tree produced by jsbachParser#call.
@@ -229,6 +232,11 @@ class TreeVisitor(jsbachVisitor):
         sol = self.visit(codi)
         self.simbols.pop()
         return sol
+
+    # Visit a parse tree produced by jsbachParser#ret.
+    def visitRet(self, ctx:jsbachParser.RetContext):
+        l = list(ctx.getChildren())
+        return self.visit(l[1])
 
     ##
     # End visit line instructions
@@ -288,13 +296,12 @@ class TreeVisitor(jsbachVisitor):
     # End function, header and parameters visitors
     ##
 
-    # Only needed for returns:
-    # def visitCodeblock(self, ctx):
-    #    l = list(ctx.getChildren())
-    #    for lin in l:
-    #        ret = self.visit(lin)
-    #        if ret != None:
-    #            return ret
+    def visitCodeblock(self, ctx):
+        l = list(ctx.getChildren())
+        for lin in l:
+            ret = self.visit(lin)
+            if ret != None:
+                return ret
 
     def run(self, funName, params):
         self.simbols.append({})
@@ -302,7 +309,7 @@ class TreeVisitor(jsbachVisitor):
             raise Exception("Function " + funName + " doesn't exists.")
         (codi, paramsNames) = self.functions[funName]
         if len(paramsNames) != len(params):
-            raise Exception("Function " + funName + " has " + str(len(paramsNames)) + " but " + str(len(params)) + " were provided.")
+            raise Exception("Function " + funName + " has parameters" + str(len(paramsNames)) + " but " + str(len(params)) + " were provided.")
         for (x, y) in zip(paramsNames, params):
             self.setValueOfSimbol(x, y)
         self.visit(codi)
@@ -374,6 +381,7 @@ def main():
     try:
         visitor.visit(tree)
     except Exception as err:
+        # errors while parsing the program
         print("Bad program format: {0}".format(err))
         return
 

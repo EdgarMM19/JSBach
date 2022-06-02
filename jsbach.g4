@@ -22,8 +22,8 @@ line :
         |  'while'  cond  '|:'   codeblock  ':|'                           # while
         |  VAR '<<' expr                                                   # append
         |  '8<' VAR '[' expr ']'                                           # delete
-        /* | 'return' expr                                                 # ret TODO: afegir-ho */ 
-        | FNME param                                                       # call
+        |  'rück' expr                                                     # ret
+        |  FNME param                                                      # call
         ;
 
 expr :
@@ -39,6 +39,7 @@ expr :
     | NUM                    # num
     | VAR                    # var
     | NOTE                   # note
+    | FNME param             # callInExpr
     ;
 
 fheader :
