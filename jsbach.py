@@ -275,7 +275,6 @@ class TreeVisitor(jsbachVisitor):
         for x in l:
             if x.getText() in param:
                 raise Exception("Parameter " + x.getText() + " appears twice in function definition.")
-
             param.append(x.getText())
         return param
 
@@ -356,6 +355,16 @@ def main():
     programName = sys.argv[1].replace(".jsb", "")
     input_stream = FileStream(programName + ".jsb", encoding='utf-8')
 
+    beginAt = "Main"
+    args = []
+    if len(sys.argv) > 2:
+        if sys.argv[2] != "-NP":
+            beginAt = sys.argv[2]
+            for arg in sys.argv[3:]:
+                if arg != "-NP":
+                    args.append(int(arg))
+
+
     lexer = jsbachLexer(input_stream)
     token_stream = CommonTokenStream(lexer)
     parser = jsbachParser(token_stream)
@@ -368,14 +377,7 @@ def main():
         print("Bad program format: {0}".format(err))
         return
 
-    beginAt = "Main"
-    args = []
-    if len(sys.argv) > 2:
-        if sys.argv[2] != "-NP":
-            beginAt = sys.argv[2]
-            for arg in sys.argv[3:]:
-                if arg != "-NP":
-                    args.append(int(arg))
+
     try:
         visitor.run(beginAt, args)
     except Exception as err:
