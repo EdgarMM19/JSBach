@@ -134,12 +134,27 @@ class TreeVisitor(jsbachVisitor):
     # Visit a parse tree produced by jsbachParser#assign.
     def visitAssign(self, ctx):
         l = list(ctx.getChildren())
-        nom = l[0].getText()
+        name = l[0].getText()
         val = self.visit(l[2])
-        # list asignation is by copy
+        # list assignation is by copy
         if isinstance(val, list):
             val = list(val)
-        self.setValueOfSimbol(nom, val)
+        self.setValueOfSimbol(name, val)
+
+    # Visit a parse tree produced by jsbachParser#assignVectorPos.
+    def visitAssignVectorPos(self, ctx):
+        l = list(ctx.getChildren())
+        name = l[0].getText()
+        index = self.visit(l[2])-1
+        val = self.visit(l[5])
+        if isinstance(val, list):
+            raise Exception("Lists can not be members of lists.")
+        v = self.getValueOfSimbol(name)
+        if not isinstance(v, list):
+            raise Exception("Can not acces a position of non-list object.")
+        if index < 0 or index >= len(v):
+            raise Exception("Trying to set an element not in array bounds.")
+        v[index] = val
 
     # Visit a parse tree produced by jsbachParser#wrt.
     def visitWrt(self, ctx):
@@ -391,8 +406,6 @@ def main():
 
     tree = parser.root()
     visitor = TreeVisitor()
-
-    print(tree.toStringTree(recog=parser))
     try:
         visitor.visit(tree)
     except Exception as err:

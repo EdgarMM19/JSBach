@@ -13,6 +13,7 @@ codeblock : (line)*;
 
 line : 
            VAR '<-' assignable                                             # assign
+        |  VAR '[' expr ']' '<-' expr                                      # assignVectorPos
         |  '<!>' (printable)+                                              # wrt 
         |  '<?>' VAR                                                       # read
         |  '<:>' expr                                                      # repr

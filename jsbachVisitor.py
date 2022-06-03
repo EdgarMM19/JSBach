@@ -34,6 +34,11 @@ class jsbachVisitor(ParseTreeVisitor):
         return self.visitChildren(ctx)
 
 
+    # Visit a parse tree produced by jsbachParser#assignVectorPos.
+    def visitAssignVectorPos(self, ctx:jsbachParser.AssignVectorPosContext):
+        return self.visitChildren(ctx)
+
+
     # Visit a parse tree produced by jsbachParser#wrt.
     def visitWrt(self, ctx:jsbachParser.WrtContext):
         return self.visitChildren(ctx)
