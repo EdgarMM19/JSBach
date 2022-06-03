@@ -256,7 +256,10 @@ class TreeVisitor(jsbachVisitor):
         a = []
         l = list(ctx.getChildren())
         for elem in l[1:-1]:
-            a.append(self.visit(elem))
+            el = self.visit(elem)
+            if isinstance(el, list):
+                raise Exception("Lists can not be members of lists.")
+            a.append(el)
         return a
 
     def visitComparate(self, ctx: jsbachParser.ComparateContext):
@@ -388,6 +391,8 @@ def main():
 
     tree = parser.root()
     visitor = TreeVisitor()
+
+    print(tree.toStringTree(recog=parser))
     try:
         visitor.visit(tree)
     except Exception as err:

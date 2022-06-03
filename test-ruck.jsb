@@ -4,10 +4,13 @@ Main |:
     <!> "Escriu dos nombres"
     <?> a
     <?> b
+
     <!> "El seu MCD es" (Euclides a b)
+
     c <- (Euclides a b)*3
     <!> "Tres cops el seu MCD es" c
     <!> "El maxim es" (Max a b)
+
     <!> "La multiplicacio dels seus factorials es" (Factorial a) * (Factorial b)
 :|
 

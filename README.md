@@ -35,4 +35,4 @@ S'ha fet una extensió per tal que els procediments ja no ho siguin, ara són fu
 
 Mijançant la comanda *rück* (*return* en alemany, no ruc de tonto!) seguida de una expressió fem la funció en la que ens trobem acabi i retorni aquest valor, que ha de ser un enter. Així podem utilitzar els valors computats per una funció per tal de ajudar-nos en càlculs intermitjos de una expressió facilitant la programació.
 
-Podem trobar tres exemple de funció (una modificació del *gcd*, una funció *max* i un factorial recursiu) a *test-ruck.jsb*.
+Podem trobar tres exemple de funció (una modificació del *gcd*, una funció *max* i un factorial recursiu) a *test-ruck.jsb* i una implementació de Collatz a *test-collatz.jsb*.
