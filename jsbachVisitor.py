@@ -149,6 +149,11 @@ class jsbachVisitor(ParseTreeVisitor):
         return self.visitChildren(ctx)
 
 
+    # Visit a parse tree produced by jsbachParser#comparate.
+    def visitComparate(self, ctx:jsbachParser.ComparateContext):
+        return self.visitChildren(ctx)
+
+
     # Visit a parse tree produced by jsbachParser#rem.
     def visitRem(self, ctx:jsbachParser.RemContext):
         return self.visitChildren(ctx)
@@ -161,11 +166,6 @@ class jsbachVisitor(ParseTreeVisitor):
 
     # Visit a parse tree produced by jsbachParser#param.
     def visitParam(self, ctx:jsbachParser.ParamContext):
-        return self.visitChildren(ctx)
-
-
-    # Visit a parse tree produced by jsbachParser#cond.
-    def visitCond(self, ctx:jsbachParser.CondContext):
         return self.visitChildren(ctx)
 
 

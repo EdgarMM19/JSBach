@@ -136,6 +136,9 @@ class TreeVisitor(jsbachVisitor):
         l = list(ctx.getChildren())
         nom = l[0].getText()
         val = self.visit(l[2])
+        # list asignation is by copy
+        if isinstance(val, list):
+            val = list(val)
         self.setValueOfSimbol(nom, val)
 
     # Visit a parse tree produced by jsbachParser#wrt.
@@ -256,20 +259,20 @@ class TreeVisitor(jsbachVisitor):
             a.append(self.visit(elem))
         return a
 
-    def visitCond(self, ctx):
+    def visitComparate(self, ctx: jsbachParser.ComparateContext):
         l = list(ctx.getChildren())
         if l[1].getText() == '=':
-            return self.visit(l[0]) == self.visit(l[2])
+            return int(self.visit(l[0]) == self.visit(l[2]))
         elif l[1].getText() == '<':
-            return self.visit(l[0]) < self.visit(l[2])
+            return int(self.visit(l[0]) < self.visit(l[2]))
         elif l[1].getText() == '>':
-            return self.visit(l[0]) > self.visit(l[2])
+            return int(self.visit(l[0]) > self.visit(l[2]))
         elif l[1].getText() == '/=':
-            return self.visit(l[0]) != self.visit(l[2])
+            return int(self.visit(l[0]) != self.visit(l[2]))
         elif l[1].getText() == '>=':
-            return self.visit(l[0]) >= self.visit(l[2])
+            return int(self.visit(l[0]) >= self.visit(l[2]))
         elif l[1].getText() == '<=':
-            return self.visit(l[0]) <= self.visit(l[2])
+            return int(self.visit(l[0]) <= self.visit(l[2]))
 
     ##
     # Function, header and parameters visitors

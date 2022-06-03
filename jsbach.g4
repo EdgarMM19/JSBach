@@ -17,9 +17,9 @@ line :
         |  '<?>' VAR                                                       # read
         |  '<:>' expr                                                      # repr
         |  '<:>' list                                                      # listrepr
-        |  'if' cond '|:'  codeblock ':|' 'else' '|:' codeblock ':|'       # ifelse 
-        |  'if'  cond  '|:'   codeblock  ':|'                              # if
-        |  'while'  cond  '|:'   codeblock  ':|'                           # while
+        |  'if' expr '|:'  codeblock ':|' 'else' '|:' codeblock ':|'       # ifelse 
+        |  'if'  expr  '|:'   codeblock  ':|'                              # if
+        |  'while'  expr  '|:'   codeblock  ':|'                           # while
         |  VAR '<<' expr                                                   # append
         |  '8<' VAR '[' expr ']'                                           # delete
         |  'rück' expr                                                     # ret
@@ -28,6 +28,7 @@ line :
 
 expr :
      '('  expr ')'           # par
+    | SUBS expr              # unarysub
     | '#' VAR                # listlength
     | VAR '[' expr ']'       # listaccess
     | expr  DIV  expr        # div
@@ -35,7 +36,7 @@ expr :
     | expr  REM  expr        # rem
     | expr  ADD  expr        # add
     | expr  SUBS  expr       # sub
-    | SUBS expr              # unarysub
+    | expr COMP expr         # comparate 
     | NUM                    # num
     | VAR                    # var
     | NOTE                   # note
@@ -47,8 +48,6 @@ fheader :
 
 param :
     (expr)*;
-
-cond :  expr  COMP  expr  ;
 
 assignable : expr
             | list;
@@ -66,7 +65,6 @@ NOTE: [A-B]'0'
     | [A-G]
     | 'C8' ;
 
-LN : '\n' | EOF;
 VAR : [a-z][0-9a-zA-Z\u0080-\u00FF_]*;
 FNME : [A-Z][0-9a-zA-Z\u0080-\u00FF_]*; 
 NUM : [0-9]+| [0-9]+ ;

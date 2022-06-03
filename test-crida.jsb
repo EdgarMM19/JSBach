@@ -7,7 +7,7 @@ Main |:
     Euclides a b
 :|
 
-Euclides a b |:
+Euclides a b|:
     if a < 0 |:
         a <- -a
     :|
