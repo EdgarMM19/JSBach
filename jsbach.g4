@@ -69,7 +69,7 @@ NOTE: [A-B]'0'
 LN : '\n' | EOF;
 VAR : [a-z][0-9a-zA-Z\u0080-\u00FF_]*;
 FNME : [A-Z][0-9a-zA-Z\u0080-\u00FF_]*; 
-NUM : '-'[0-9]+| [0-9]+ ;
+NUM : [0-9]+| [0-9]+ ;
 
 ADD : '+' ;
 MULT : '*' ;

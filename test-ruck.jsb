@@ -8,7 +8,7 @@ Main |:
     c <- (Euclides a b)*3
     <!> "Tres cops el seu MCD es" c
     <!> "El maxim es" (Max a b)
-
+    <!> "La multiplicacio dels seus factorials es" (Factorial a) * (Factorial b)
 :|
 
 Euclides a b |:
@@ -33,5 +33,12 @@ Max a b |:
         rück a
     :|
     rück b
+:|
 
+Factorial n |:
+  if n = 0 |:
+    rück 1
+  :|
+
+  rück (n * (Factorial (n-1) ))
 :|

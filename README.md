@@ -19,7 +19,7 @@ Podem cridar llavors al interpret amb:
 python3 jsbach.py NOMPROGRAMA.jsb [Funcio parametres] [-NP]
 ```
 
-On *NOMPROGRAMA.jsb* és el arxiu que volem executar. *Funcio* es la funció per on volem que comenci l'execució (per defecte Main), si aquesta funció té paràmetres numèrics s'han de donar. Si te llistes com paràmetres no es pot començar l'execució desde aquesta funció. Finalment l'opció *-NP* fa que no es reprodugui música en cas de que s'hagi generat.
+On *NOMPROGRAMA.jsb* és el arxiu que volem executar. *Funcio* es la funció per on volem que comenci l'execució (per defecte Main), si aquesta funció té paràmetres numèrics s'han de donar. Si te llistes com paràmetres no es pot començar l'execució desde aquesta funció. Finalment l'opció *-NP* fa que no es reprodueixi música en cas de que s'hagi generat.
 
 ## Addendes
 
@@ -35,4 +35,4 @@ S'ha fet una extensió per tal que els procediments ja no ho siguin, ara són fu
 
 Mijançant la comanda *rück* (*return* en alemany, no ruc de tonto!) seguida de una expressió fem la funció en la que ens trobem acabi i retorni aquest valor, que ha de ser un enter. Així podem utilitzar els valors computats per una funció per tal de ajudar-nos en càlculs intermitjos de una expressió facilitant la programació.
 
-Podem trobar dos exemple de funció (una modificació del *gcd* i una funció *max*) a *test-ruck.jsb*.
+Podem trobar tres exemple de funció (una modificació del *gcd*, una funció *max* i un factorial recursiu) a *test-ruck.jsb*.

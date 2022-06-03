@@ -12,6 +12,7 @@ import sys
 import os
 from subprocess import DEVNULL, STDOUT, check_call
 
+
 class TreeVisitor(jsbachVisitor):
     def __init__(self):
         self.simbols = []
@@ -70,7 +71,7 @@ class TreeVisitor(jsbachVisitor):
         return self.visit(l[0]) - self.visit(l[2])
 
     # Visit a parse tree produced by jsbachParser#unarysub.
-    def visitUnarysub(self, ctx: jsbachParser.UnarysubContext):
+    def visitUnarysub(self, ctx):
         l = list(ctx.getChildren())
         return - self.visit(l[1])
 
@@ -93,7 +94,8 @@ class TreeVisitor(jsbachVisitor):
         l = list(ctx.getChildren())
         a = self.getValueOfSimbol(l[1].getText())
         if not isinstance(a, list):
-            raise Exception("Can not get length of a non-list object " + l[0].getText())
+            raise Exception(
+                "Can not get length of a non-list object " + l[0].getText())
         return len(a)
 
     # Visit a parse tree produced by jsbachParser#listaccess.
@@ -102,7 +104,8 @@ class TreeVisitor(jsbachVisitor):
         a = self.getValueOfSimbol(l[0].getText())
         index = self.visit(l[2])-1
         if not isinstance(a, list):
-            raise Exception("Can not access a non-list object " + l[0].getText())
+            raise Exception(
+                "Can not access a non-list object " + l[0].getText())
         if index < 0 or index >= len(a):
             raise Exception("Trying to acces element not in array bounds.")
         return a[index]
@@ -201,7 +204,8 @@ class TreeVisitor(jsbachVisitor):
         l = list(ctx.getChildren())
         a = self.getValueOfSimbol(l[0].getText())
         if not isinstance(a, list):
-            raise Exception("Can not get append to a non-list object " + l[0].getText())
+            raise Exception(
+                "Can not get append to a non-list object " + l[0].getText())
         a.append(self.visit(l[2]))
 
     # Visit a parse tree produced by jsbachParser#delete.
@@ -209,7 +213,8 @@ class TreeVisitor(jsbachVisitor):
         l = list(ctx.getChildren())
         a = self.getValueOfSimbol(l[1].getText())
         if not isinstance(a, list):
-            raise Exception("Can not get delete an element of a non-list object " + l[0].getText())
+            raise Exception(
+                "Can not get delete an element of a non-list object " + l[0].getText())
         index = self.visit(l[3])-1
         if index < 0 or index >= len(a):
             raise Exception("Trying to delete element not in array bounds.")
@@ -225,7 +230,8 @@ class TreeVisitor(jsbachVisitor):
             raise Exception("Function " + funName + " doesn't exists.")
         (codi, paramsNames) = self.functions[funName]
         if len(paramsNames) != len(params):
-            raise Exception("Function " + funName + " has " + str(len(paramsNames)) + " parameters but " + str(len(params)) + " were provided.")
+            raise Exception("Function " + funName + " has " + str(len(paramsNames)) +
+                            " parameters but " + str(len(params)) + " were provided.")
         self.simbols.append({})
         for (x, y) in zip(paramsNames, params):
             self.setValueOfSimbol(x, y)
@@ -234,7 +240,7 @@ class TreeVisitor(jsbachVisitor):
         return sol
 
     # Visit a parse tree produced by jsbachParser#ret.
-    def visitRet(self, ctx:jsbachParser.RetContext):
+    def visitRet(self, ctx: jsbachParser.RetContext):
         l = list(ctx.getChildren())
         return self.visit(l[1])
 
@@ -282,7 +288,8 @@ class TreeVisitor(jsbachVisitor):
         param = []
         for x in l:
             if x.getText() in param:
-                raise Exception("Parameter " + x.getText() + " appears twice in function definition.")
+                raise Exception("Parameter " + x.getText() +
+                                " appears twice in function definition.")
             param.append(x.getText())
         return param
 
@@ -309,7 +316,8 @@ class TreeVisitor(jsbachVisitor):
             raise Exception("Function " + funName + " doesn't exists.")
         (codi, paramsNames) = self.functions[funName]
         if len(paramsNames) != len(params):
-            raise Exception("Function " + funName + " has parameters" + str(len(paramsNames)) + " but " + str(len(params)) + " were provided.")
+            raise Exception("Function " + funName + " has parameters" +
+                            str(len(paramsNames)) + " but " + str(len(params)) + " were provided.")
         for (x, y) in zip(paramsNames, params):
             self.setValueOfSimbol(x, y)
         self.visit(codi)
@@ -371,7 +379,6 @@ def main():
                 if arg != "-NP":
                     args.append(int(arg))
 
-
     lexer = jsbachLexer(input_stream)
     token_stream = CommonTokenStream(lexer)
     parser = jsbachParser(token_stream)
@@ -384,7 +391,6 @@ def main():
         # errors while parsing the program
         print("Bad program format: {0}".format(err))
         return
-
 
     try:
         visitor.run(beginAt, args)
