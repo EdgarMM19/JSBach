@@ -23,9 +23,7 @@ Main |:
 		j <- 0
 		m <- coins[i+1]
 		while j + m <= p |:
-			if memo[j+1] |:
-				memo[j+1+m] <- 1
-			:|
+			memo[j+1+m] <- Max memo[j+1] memo[j+1+m]
 			j <- j+1
 		:|
 		i <- i+1
@@ -36,4 +34,11 @@ Main |:
 	else |:
 		<!> "No pots pagar :("
 	:|
+:|
+
+Max a b |:
+	if a > b |:
+		rück a
+	:|
+	rück b
 :|
