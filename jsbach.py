@@ -121,7 +121,10 @@ class TreeVisitor(jsbachVisitor):
         return self.noteToInt(l[0].getText())
 
     def visitCallInExpr(self, ctx):
-        return self.visitCall(ctx)
+        l = list(ctx.getChildren())
+        funName = l[0].getText()
+        params = self.visit(l[1])
+        return self.visitGenericCall(funName, params)
 
     ##
     # end arithmetic expressions visitors
@@ -240,17 +243,20 @@ class TreeVisitor(jsbachVisitor):
 
     # Visit a parse tree produced by jsbachParser#call.
     def visitCall(self, ctx):
-        l = list(ctx.getChildren())
-        funName = l[0].getText()
-        params = self.visit(l[1])
+       l = list(ctx.getChildren())
+       funName = l[0].getText()
+       params = self.visit(l[1])
+       self.visitGenericCall(funName, params)
 
+    # Used in visitCall and visitCallInExpr and run for good handling of return statements
+    def visitGenericCall(self, funName, params):
+        self.simbols.append({})
         if not funName in self.functions:
             raise Exception("Function " + funName + " doesn't exists.")
         (codi, paramsNames) = self.functions[funName]
         if len(paramsNames) != len(params):
             raise Exception("Function " + funName + " has " + str(len(paramsNames)) +
                             " parameters but " + str(len(params)) + " were provided.")
-        self.simbols.append({})
         for (x, y) in zip(paramsNames, params):
             self.setValueOfSimbol(x, y)
         sol = self.visit(codi)
@@ -332,16 +338,7 @@ class TreeVisitor(jsbachVisitor):
                 return ret
 
     def run(self, funName, params):
-        self.simbols.append({})
-        if not funName in self.functions:
-            raise Exception("Function " + funName + " doesn't exists.")
-        (codi, paramsNames) = self.functions[funName]
-        if len(paramsNames) != len(params):
-            raise Exception("Function " + funName + " has parameters" +
-                            str(len(paramsNames)) + " but " + str(len(params)) + " were provided.")
-        for (x, y) in zip(paramsNames, params):
-            self.setValueOfSimbol(x, y)
-        self.visit(codi)
+        self.visitGenericCall(funName, params)
 
     def getNotes(self):
         return self.notes
@@ -376,6 +373,24 @@ def generateLily(fileName, notes):
     f.write("}\n")
     f.close()
 
+
+def generateMusic(notes, name, reproduce):
+    # if no notes generated don't try to play music
+    if len(notes) > 0:
+        generateLily(name, notes)
+
+        check_call(['lilypond', name + ".lily"],
+                   stdout=DEVNULL, stderr=STDOUT)
+        check_call(['timidity', '-Ow', '-o', name + ".wav",
+                   name + ".midi"], stdout=DEVNULL, stderr=STDOUT)
+
+        if os.path.exists(name + ".mp3"):
+            os.remove(name + ".mp3")
+        os.system(' '.join(['ffmpeg', '-i', name + ".wav", '-codec:a',
+                  'libmp3lame', '-qscale:a', '2', name + ".mp3", "2>/dev/null"]))
+        if reproduce:
+            check_call(['afplay', name + ".mp3"],
+                       stdout=DEVNULL, stderr=STDOUT)
 
 def main():
     if len(sys.argv) == 1:
@@ -420,22 +435,8 @@ def main():
         return
 
     notes = visitor.getNotes()
-    # if no notes generated don't try to play music
-    if len(notes) > 0:
-        generateLily(programName, notes)
+    generateMusic(notes, programName, reproduce)
 
-        check_call(['lilypond', programName + ".lily"],
-                   stdout=DEVNULL, stderr=STDOUT)
-        check_call(['timidity', '-Ow', '-o', programName + ".wav",
-                   programName + ".midi"], stdout=DEVNULL, stderr=STDOUT)
-
-        if os.path.exists(programName + ".mp3"):
-            os.remove(programName + ".mp3")
-        os.system(' '.join(['ffmpeg', '-i', programName + ".wav", '-codec:a',
-                  'libmp3lame', '-qscale:a', '2', programName + ".mp3", "2>/dev/null"]))
-        if reproduce:
-            check_call(['afplay', programName + ".mp3"],
-                       stdout=DEVNULL, stderr=STDOUT)
 
 
 if __name__ == "__main__":
