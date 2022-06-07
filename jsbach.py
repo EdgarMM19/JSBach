@@ -41,6 +41,22 @@ class TreeVisitor(jsbachVisitor):
         return val
     # End variables management
 
+    # Used in visitCall and visitCallInExpr and run for good handling of return statements
+
+    def genericFunctionCall(self, funName, params):
+        self.simbols.append({})
+        if not funName in self.functions:
+            raise Exception("Function " + funName + " doesn't exists.")
+        (codi, paramsNames) = self.functions[funName]
+        if len(paramsNames) != len(params):
+            raise Exception("Function " + funName + " has " + str(len(paramsNames)) +
+                            " parameters but " + str(len(params)) + " were provided.")
+        for (x, y) in zip(paramsNames, params):
+            self.setValueOfSimbol(x, y)
+        sol = self.visit(codi)
+        self.simbols.pop()
+        return sol
+
     ##
     # arithmetic expressions visitors
     ##
@@ -124,7 +140,7 @@ class TreeVisitor(jsbachVisitor):
         l = list(ctx.getChildren())
         funName = l[0].getText()
         params = self.visit(l[1])
-        return self.visitGenericCall(funName, params)
+        return self.genericFunctionCall(funName, params)
 
     ##
     # end arithmetic expressions visitors
@@ -243,25 +259,10 @@ class TreeVisitor(jsbachVisitor):
 
     # Visit a parse tree produced by jsbachParser#call.
     def visitCall(self, ctx):
-       l = list(ctx.getChildren())
-       funName = l[0].getText()
-       params = self.visit(l[1])
-       self.visitGenericCall(funName, params)
-
-    # Used in visitCall and visitCallInExpr and run for good handling of return statements
-    def visitGenericCall(self, funName, params):
-        self.simbols.append({})
-        if not funName in self.functions:
-            raise Exception("Function " + funName + " doesn't exists.")
-        (codi, paramsNames) = self.functions[funName]
-        if len(paramsNames) != len(params):
-            raise Exception("Function " + funName + " has " + str(len(paramsNames)) +
-                            " parameters but " + str(len(params)) + " were provided.")
-        for (x, y) in zip(paramsNames, params):
-            self.setValueOfSimbol(x, y)
-        sol = self.visit(codi)
-        self.simbols.pop()
-        return sol
+        l = list(ctx.getChildren())
+        funName = l[0].getText()
+        params = self.visit(l[1])
+        self.genericFunctionCall(funName, params)
 
     # Visit a parse tree produced by jsbachParser#ret.
     def visitRet(self, ctx: jsbachParser.RetContext):
@@ -338,7 +339,7 @@ class TreeVisitor(jsbachVisitor):
                 return ret
 
     def run(self, funName, params):
-        self.visitGenericCall(funName, params)
+        self.genericFunctionCall(funName, params)
 
     def getNotes(self):
         return self.notes
@@ -392,6 +393,7 @@ def generateMusic(notes, name, reproduce):
             check_call(['afplay', name + ".mp3"],
                        stdout=DEVNULL, stderr=STDOUT)
 
+
 def main():
     if len(sys.argv) == 1:
         print("Use:\npython3 jsbach.py programname.jsb [StartFunction] [Parameters of Start function] [-NP]\
@@ -436,7 +438,6 @@ def main():
 
     notes = visitor.getNotes()
     generateMusic(notes, programName, reproduce)
-
 
 
 if __name__ == "__main__":
