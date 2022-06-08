@@ -28,7 +28,15 @@ class TreeVisitor(jsbachVisitor):
             return self.simbols[-1][name]
 
     def setValueOfSimbol(self, name, val):
-        self.simbols[-1][name] = val
+        # correct and assign and pass by reference in list handling
+        # can not break the pointers
+        if isinstance(val, list) and (name in self.simbols[-1]):
+            while len(self.simbols[-1][name]) != 0:
+                self.simbols[-1][name].pop()
+            for x in val:
+                self.simbols[-1][name].append(x)
+        else:
+            self.simbols[-1][name] = val
         return self.simbols[-1][name]
 
     def noteToInt(self, note):
